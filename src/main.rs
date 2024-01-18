@@ -21,7 +21,7 @@ pub static malloc_conf: &[u8] = b"prof:true,prof_active:true,lg_prof_sample:19\0
 #[tokio::main]
 async fn main() {
     // build our application with a single route
-    let app = Router::new().route("/", axum::routing::get(handle_get_heap));
+    let app = axum::Router::new().route("/debug/pprof/heap", axum::routing::get(handle_get_heap));
 
     // run our app with hyper, listening globally on port 3000
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
