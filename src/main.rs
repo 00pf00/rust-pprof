@@ -34,10 +34,7 @@ pub async fn handle_get_heap() -> Result<impl IntoResponse, (StatusCode, String)
     let pprof = prof_ctl
         .dump_pprof()
         .map_err(|err| (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))?;
-    let mut buffer_reader = BufReader::new(pprof);
-    let mut buffer = Vec::new();
-    let _ = buffer_reader.read_to_end(&mut buffer);
-    Ok(buffer)
+    Ok(pprof)
 }
 
 /// Checks whether jemalloc profiling is activated an returns an error response if not.
