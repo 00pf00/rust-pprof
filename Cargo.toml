@@ -1,0 +1,14 @@
+[package]
+name = "rust-pprof"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+axum = "0.7.3"
+tokio = { version = "1.35.1", features = ["macros", "rt-multi-thread"] }
+[target.'cfg(not(target_env = "msvc"))'.dependencies]
+tikv-jemallocator = { version = "0.5.4", features = ["profiling", "unprefixed_malloc_on_supported_platforms"] }
+jemalloc_pprof = "0.1.0"
+tikv-jemalloc-ctl = "0.5.4"
