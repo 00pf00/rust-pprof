@@ -16,3 +16,7 @@ tikv-jemalloc-ctl = "0.5.4"
 [profile.release]
 panic = 'abort'
 debug = true
+
+[rust]
+debuginfo-level = 1
+
