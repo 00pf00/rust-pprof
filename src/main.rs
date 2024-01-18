@@ -33,7 +33,7 @@ pub async fn handle_get_heap() -> Result<impl IntoResponse, (StatusCode, String)
     let pprof = prof_ctl
         .dump_pprof()
         .map_err(|err| (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))?;
-    Ok(buffer)
+    Ok(pprof)
 }
 
 /// Checks whether jemalloc profiling is activated an returns an error response if not.
