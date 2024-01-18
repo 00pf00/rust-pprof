@@ -15,8 +15,9 @@ pub static malloc_conf: &[u8] = b"prof:true,prof_active:true,lg_prof_sample:19\0
 
 #[tokio::main]
 async fn main() {
-    let mut v = vec![];
-    heapinfo(v);
+
+    let v = heapinfo();
+    println!("{}",v.len());
     // build our application with a single route
     let app = axum::Router::new().route("/debug/pprof/heap", axum::routing::get(handle_get_heap));
 
@@ -25,10 +26,12 @@ async fn main() {
     axum::serve(listener, app).await.unwrap();
 }
 
-fn heapinfo(v :vec![]){
+fn heapinfo()->Vec<i32>{
+    let mut v = vec![];
     for i in 0..1000000 {
         v.push(i);
     }
+    v
 }
 
 pub async fn handle_get_heap() -> Result<impl IntoResponse, (StatusCode, String)> {
