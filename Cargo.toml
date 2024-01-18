@@ -12,3 +12,7 @@ tokio = { version = "1.35.1", features = ["macros", "rt-multi-thread"] }
 tikv-jemallocator = { version = "0.5.4", features = ["profiling", "unprefixed_malloc_on_supported_platforms"] }
 jemalloc_pprof = "0.1.0"
 tikv-jemalloc-ctl = "0.5.4"
+
+[profile.release]
+panic = 'abort'
+debug = true
