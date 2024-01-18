@@ -32,11 +32,8 @@ pub async fn handle_get_heap() -> Result<impl IntoResponse, (StatusCode, String)
     let mut prof_ctl = jemalloc_pprof::PROF_CTL.as_ref().unwrap().lock().await;
     require_profiling_activated(&prof_ctl)?;
     let pprof = prof_ctl
-        .dump()
+        .dump_pprof()
         .map_err(|err| (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))?;
-    let mut buffer_reader = BufReader::new(pprof);
-    let mut buffer = Vec::new();
-    let _ = buffer_reader.read_to_end(&mut buffer);
     Ok(buffer)
 }
 
