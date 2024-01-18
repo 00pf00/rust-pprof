@@ -16,6 +16,10 @@ pub static malloc_conf: &[u8] = b"prof:true,prof_active:true,lg_prof_sample:19\0
 
 #[tokio::main]
 async fn main() {
+    let mut v = vec![];
+    for i in 0..1000000 {
+        v.push(i);
+    }
     // build our application with a single route
     let app = axum::Router::new().route("/debug/pprof/heap", axum::routing::get(handle_get_heap));
 
