@@ -1,7 +1,4 @@
-use axum::{
-    routing::get,
-    Router,
-};
+use std::io::{BufReader, Read};
 use axum::http::StatusCode;
 use axum::response::IntoResponse;
 use jemalloc_pprof;
@@ -31,9 +28,12 @@ pub async fn handle_get_heap() -> Result<impl IntoResponse, (StatusCode, String)
     let mut prof_ctl = jemalloc_pprof::PROF_CTL.as_ref().unwrap().lock().await;
     require_profiling_activated(&prof_ctl)?;
     let pprof = prof_ctl
-        .dump_pprof()
+        .dump()
         .map_err(|err| (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()))?;
-    Ok(pprof)
+    let mut buffer_reader = BufReader::new(pprof);
+    let mut buffer = Vec::new();
+    let _ = buffer_reader.read_to_end(&mut buffer);
+    Ok(buffer)
 }
 
 /// Checks whether jemalloc profiling is activated an returns an error response if not.
